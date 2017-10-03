@@ -1,2 +1,2 @@
 # IF2123-Algeo
-IF2123 Aljabar Geometri
+IF2123 - Aljabar Geometri
