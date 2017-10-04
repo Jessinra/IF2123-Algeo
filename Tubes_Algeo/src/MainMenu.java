@@ -19,13 +19,16 @@ public class MainMenu {
 		
 		 display1: while(true) {
 			    System.out.println(
+			    	" =================================================== \n"+
+			    	" ||  \\(^.^)    Welcome to the Matrix      (^.^)/   ||\n"+
+			    	" =================================================== \n\n"+
 			        "Pilih jenis input yang anda inginkan: \n" +
 			        "  1) Input manual\n" +
 			        "  2) Input dari file eksternal\n" +
 			        "  3) Membuat matriks solvable random\n" +
 			        "  4) Membuat matriks multisolution random\n" + 
 			        "  5) Membuat matriks unsolvable random\n" +
-			        "  0) Exit program\n" +
+			        "  0) Exit program\n\n" +
 			        "Input : "
 			    );
 			    int selection = in.nextInt();
@@ -87,7 +90,7 @@ public class MainMenu {
 		    System.out.println(
 		        "  1) Menyelesaikan matriks (metode Gauss-Jordan)\n"  +
 		        "  2) Interpolasi polinom\n"  +
-		        "  9) Kembali ke menu sebelumnya\n"  +
+		        "  9) Ulangi input\n"  +
 		        "  0) Exit program\n" +
 		        "Input : "
 		    );
@@ -114,6 +117,7 @@ public class MainMenu {
 		    case 9:
 		      System.out.println("Mengembalikan ke menu sebelumnya...");
 		      X = true;
+		      run();
 		      break display2;
 		    case 0:
 			  System.out.println("Mengeluarkan dari program");
@@ -128,6 +132,7 @@ public class MainMenu {
 	
 	public static void main(String[] args) {
 		MainMenu menu = new MainMenu();
+
 		menu.run();
 
 	}

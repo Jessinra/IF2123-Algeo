@@ -47,9 +47,9 @@ public class Matrix {
 		
 		String input;
 		
-        for (int i = 1; i <= row; i++) {
-            for (int j = 1; j <= col; j++) {
-            	input = String.format(format, matrix[i][j]);
+        for (int i = 1; i <= this.row; i++) {
+            for (int j = 1; j <= this.col; j++) {
+            	input = String.format(format, this.Elmt(i,j));
             	System.out.print("Matriks ["+i+"] ["+j+"] : ");
             	System.out.println(input);
             }
@@ -62,9 +62,9 @@ public class Matrix {
 		
 		String input;
 		
-        for (int i = 1; i <= row; i++) {
-            for (int j = 1; j <= col; j++) {
-            	input = String.format(format, matrix[i][j]);
+        for (int i = 1; i <= this.row; i++) {
+            for (int j = 1; j <= this.col; j++) {
+            	input = String.format(format, this.Elmt(i,j));
             	save(input, writer);
             }
             
@@ -75,16 +75,15 @@ public class Matrix {
 	public void showEx(Matrix B, BufferedWriter writer) {
 		/* Display matrix as augmented matrix */
 		
-		Matrix A = this;
 		String input;
 		
         for (int i = 1; i <= this.row; i++) {
             for (int j = 1; j <= this.col; j++) {
-            	input = String.format(format, A.matrix[i][j]);
+            	input = String.format(format, this.Elmt(i,j));
                 save(input,writer);
             }
             
-            input = (String.format(format, B.matrix[i][1]));
+            input = (String.format(format, B.Elmt(i,1)));
             save(input, writer);
             save("\n", writer);
         }
@@ -94,36 +93,32 @@ public class Matrix {
 	public void showFinal(BufferedWriter writer){
 		/* Display final result */
 		
-		Matrix X = this;
-		
-		for (int i = 1; i <= row; i++) {
+		for (int i = 1; i <= this.row; i++) {
 			String input = String.format("X"+Integer.toString(i)+" : ");
 			save(input ,writer);
-            for (int j = 1; j <= col; j++) {
-            	input = String.format(format, X.matrix[i][j]);
+            for (int j = 1; j <= this.col; j++) {
+            	input = String.format(format, this.Elmt(i,j));
                 save(input, writer);
             }
-            
             save("\n", writer);
 		}
 	}
 	
 	public void showPolynom(BufferedWriter writer){
 		/* Display as polynom */
-		
-		Matrix X = this;
+
 		String input;
 		
-		for (int j = 1; j <= col; j++) {
-			input = String.format(format, X.matrix[1][j]);
+		for (int j = 1; j <= this.col; j++) {
+			input = String.format(format, this.Elmt(1,j));
 			save(input, writer);
 		}
 		
-		for (int i = 2; i <= row; i++) {
-            for (int j = 1; j <= col; j++){ 
+		for (int i = 2; i <= this.row; i++) {
+            for (int j = 1; j <= this.col; j++){ 
             	input = String.format("+");
             	save(input, writer);
-            	input = String.format(format, X.matrix[i][j]);    
+            	input = String.format(format, this.Elmt(i,j));    
                 save(input, writer);
                 input = String.format("X^"+Integer.toString(i-1));
                 save(input, writer);
@@ -155,12 +150,11 @@ public class Matrix {
         	throw new RuntimeException("Different dimension");
         }
         
-        for (int i = 1; i <= row; i++)
-            for (int j = 1; j <= col; j++)
-                if (A.matrix[i][j] != B.matrix[i][j]){
+        for (int i = 1; i <= A.row; i++)
+            for (int j = 1; j <= A.col; j++)
+                if (A.Elmt(i,j) != B.Elmt(i,j)){
                 	return false;
                 }
-        
         return true;
     }
 	
@@ -177,9 +171,9 @@ public class Matrix {
         	throw new RuntimeException("Different dimension");
         }
                
-        for (int i = 1; i <= row; i++)
-            for (int j = 1; j <= col; j++)
-                C.matrix[i][j] = A.matrix[i][j] + B.matrix[i][j];
+        for (int i = 1; i <= A.row; i++)
+            for (int j = 1; j <= A.col; j++)
+                C.matrix[i][j] = A.Elmt(i,j) + B.Elmt(i,j);
         return C;
     }
 
@@ -194,9 +188,9 @@ public class Matrix {
         	throw new RuntimeException("Different dimension");
         }
         
-        for (int i = 1; i <= row; i++)
-            for (int j = 1; j <= col; j++)
-                C.matrix[i][j] = A.matrix[i][j] - B.matrix[i][j];
+        for (int i = 1; i <= A.row; i++)
+            for (int j = 1; j <= A.col; j++)
+                C.matrix[i][j] = A.Elmt(i,j) - B.Elmt(i,j);
         return C;
     }
      
@@ -214,7 +208,7 @@ public class Matrix {
         for (int i = 1; i <= C.row; i++)
             for (int j = 1; j <= C.col; j++)
                 for (int k = 1; k <= A.col; k++)
-                    C.matrix[i][j] += (A.matrix[i][k] * B.matrix[k][j]);
+                    C.matrix[i][j] += (A.Elmt(i,k) * B.Elmt(k,j));
         return C;
     }
 
@@ -235,9 +229,9 @@ public class Matrix {
         
 		Matrix A = new Matrix(row, col);
         
-        for (int i = 1; i <= row; i++)
-            for (int j = 1; j <= col; j++)
-                A.matrix[j][i] = this.matrix[i][j];
+        for (int i = 1; i <= this.row; i++)
+            for (int j = 1; j <= this.col; j++)
+                A.matrix[j][i] = this.Elmt(i,j);
         return A;
 
 	}
@@ -279,9 +273,9 @@ public class Matrix {
 		
 		for (int i = 1; i <= deg+1; i++){
 			A.matrix[i][1] = 1;					// asign 1 to all first column
-			A.matrix[i][2] = func.matrix[i][1]; // copy the value of func into second column
+			A.matrix[i][2] = func.Elmt(i,1); // copy the value of func into second column
             for (int j = 3; j <= deg+1; j++){
-                A.matrix[i][j] = java.lang.Math.pow(A.matrix[i][2], j-1);
+                A.matrix[i][j] = java.lang.Math.pow(A.Elmt(i,2), j-1);
             }
 		}
 		
@@ -302,7 +296,7 @@ public class Matrix {
 			System.err.println("Exception : " + e.toString());
 		}
         
-        // create copies of the data
+        // Create copies of the data
         Matrix a = new Matrix(this); 	// typically the 'equation' part
         Matrix b = new Matrix(result);  // typically the 'augmented' part
 
@@ -322,156 +316,226 @@ public class Matrix {
 
             // find pivot row and swap
             int max = i;
-            for (int j = i + 1; j <= col; j++)
-                if (Math.abs(a.matrix[j][i]) > Math.abs(a.matrix[max][i]))
+            for (int j = i + 1; j <= a.col; j++)
+                if (Math.abs(a.Elmt(j,i)) > Math.abs(a.Elmt(max,i))){
                     max = j;
-            a.swap(i, max); 
-            b.swap(i, max);
-
-            // Check Solvability type
-            if (a.matrix[i][i] == 0.0){
-            	if (b.matrix[i][1]== 0.0 ){
-            		SolutionType = 2; 			// multi solution
-            	}
-            	else {
-            		SolutionType = 3; 			// no solution
-            	}
-            }
-            else if (SolutionType == 4){
-            									// interpolate
-            }
-            else {
-            	SolutionType = 1; 				// standard solvable
-            }
-            
-            
-            // pivot within b
-            for (int j = i + 1; j <= col; j++)
-                b.matrix[j][1] -= b.matrix[i][1] * a.matrix[j][i] / a.matrix[i][i];
-            	
-            	//System.out.println("pivot within b: process ");
-            	//b.show();
-            	
-            // pivot within A
-            for (int j = i + 1; j <= col; j++) {
-                double m = a.matrix[j][i] / a.matrix[i][i]; // multiplier
-                for (int k = i+1; k <= col; k++) {
-                    a.matrix[j][k] -= a.matrix[i][k] * m;
                 }
-                a.matrix[j][i] = 0.0;
-            }
+            a.swap(i, max); 
+            b.swap(i, max);          
+                       
+            	
+            // Making echelon form
+            double m = 1;
+            for (int j = i + 1; j <= a.row; j++) {
+            	int indent = 0;
+                
+            	// Finding multiplier
+                if(a.Elmt(i,i) != 0){ 	// If main diagonal is not zero
+                	m = a.Elmt(j,i) / a.Elmt(i,i);
+                }
+                else{  // If the main diagonal is zero, do indenting
+                	for(int l = 0; i+l <= a.col; l++){
+                  		if (a.Elmt(i,i+l) != 0){
+                  			m = a.Elmt(j,i+l) / a.Elmt(i,i+l);
+                  			indent = l;
+                  			break;
+                  		}
+                	}
+                }               
+                
+                // Reducing using multipier
+                for (int k = i+1; k <= a.col; k++) {
+                	a.matrix[j][k] -= a.Elmt(i,k) * m;
+                }
+                
+                // Make the rest of column zero
+                for(int l = 0; l<= i+indent; l++){
+                	a.matrix[j][i] = 0.0;
+                }
+                b.matrix[j][1] -= b.Elmt(i,1) * m;  
+            }	
         }
-        
-        Matrix x = new Matrix(col, 1);
+
+        // If matrix is not interpolated, find the solution type
+    	if (SolutionType != 4){
+    		for(int i = 1; i <= a.row; i++){
+    			/* Check for each row */
+    			
+    			SolutionType = 0;
+	    		for(int k = 1; k <= a.col; k++){
+					if (a.Elmt(i,k) != 0.0){  // If there's non-zero element
+						SolutionType = 1;
+					}
+	    		}
+				
+	    		if (SolutionType != 1){	// If there's a complete zero row
+	    			if (b.Elmt(i,1) == 0.0){ // If the result row also zero
+	    				SolutionType = 2;		// Multisolution
+	    			}
+	    			else{						// If the result row is not zero
+	    				SolutionType = 3;		// Unsolvable
+	    			}
+	    		}
+	    		
+	    		if (SolutionType == 2 || SolutionType == 3){
+	    			break;
+	    		}
+    		}
+    	}
+        	
+    	
+        Matrix x = new Matrix(a.col, 1);
     		
-        /* Display solution according to what type of solution matrix has (type 1 /2 /3 /4 ) */
+        // Display solution according to what type of solution matrix has (type 1 /2 /3 /4 ) 
 	    if (SolutionType == 1 || SolutionType == 4){ // Single solution or interpolate
 	    	
-	    	for (int j = col; j > 0; j--) {
+	    	for (int j = a.col; j > 0; j--) {
 	    		
 	            double t = 0.0;
 	            
-	            for (int k = j; k <= col; k++)
-	                t += a.matrix[j][k] * x.matrix[k][1];
-	            x.matrix[j][1] = (b.matrix[j][1] - t) / a.matrix[j][j];
+	            for (int k = j; k <= a.col; k++)
+	                t += a.Elmt(j,k) * x.Elmt(k,1);
+	            x.matrix[j][1] = (b.Elmt(j,1) - t) / a.Elmt(j,j);
 	        }
 	    	
-	    	if (SolutionType == 1)
+	    	if (SolutionType == 1){	// standard linear equation
 	    		x.showFinal(writer);
+	    	}
 	    	
-	    	else if (SolutionType == 4)
+	    	else if (SolutionType == 4){ // interpolated
 	    		x.showPolynom(writer);
-	    	
-	    	/* Close file */
-	    	try {
-				if( writer != null) writer.close();
-			}
-			catch (IOException e){
-				System.err.println("Exception : " + e.toString());	
-			}
+	    	}
         }
         
         else if (SolutionType == 2){ // Multi solution
-
+        	
         	char []var = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t'};
         	String input;
+        	int []problem = new int [25];
         	
-        	/* Searching which eq does parameter should be place on and on */
-        	int params_col = 0;
+        	  	
+        	// Reduce the matrix to echelon for non-problematical row 
+        	for (int j = a.col; j > 0; j--) {
+        		
+        		double divider = 1;
+	        	
+	        	// Finding divider
+	            if(a.Elmt(j,j) != 0){	// If the main diagonal is not zero, use it
+	            	divider = a.Elmt(j,j);
+	            }
+	            else{	// do indentation
+	            	for(int l = 0; j+l <= a.col; l++){
+	              		if (a.Elmt(j,j+l) != 0){
+	              			divider = a.Elmt(j,j+l);
+	              			break;
+	              		}
+	            	}
+	            }  
+	            
+	            // for every column, divide the element by the divider 
+	            for (int k = j; k <= a.row; k++){
+	            	a.matrix[j][k] =  a.Elmt(j,k) / divider;
+	            }
+	            b.matrix[j][1] = (b.Elmt(j,1)) / divider;
+	        }
         	
-        	for (int k = col; k > 0; k--) {
-	            if (a.matrix[k][k] == 0 ){
-	            	params_col = k;				
+        	// At this point, the matrix should be in reduced echelon form
+        	
+        	// Listing equations which should be changed into parameters    	
+        	int indent = 0;
+        	for (int k = 1; k + indent <= a.col; k++) {
+	            if (a.Elmt(k, k+indent) == 0 ){
+	            	problem[k+indent] = 0;
+	            	while((a.Elmt(k, k+indent) == 0) && (k+indent < a.col)){
+	            		indent++;
+	            	}
+	            	if (k+indent < a.col){
+	            		problem[k+indent] = k+indent;
+	            	}
+	            }
+	            else{
+	            	problem[k+indent] = k+indent;
 	            }
 	        }
+
+        	// Expand (Not a valid algorithm, but it's usable #teehee)
+        	// The idea is to make all '1' align in the main diagonal
+        	// ignore the bad naming of variable
+        	Matrix exp1 = new Matrix(a);
+        	Matrix exp2 = new Matrix(b);
         	
-        	/* Reduce the matrix to eselon for non-problematical row */
-        	for (int j = params_col-1; j > 0; j--) {
-        		
-        		double divider = a.matrix[j][j];
-	            double t = 0.0;
-	            
-	            for (int k = j; k <= params_col-1; k++)
-	                t += a.matrix[j][k] * x.matrix[k][1];
-	            
-	            b.matrix[j][1] = (b.matrix[j][1] - t) / divider;
-	            
-	            for (int k = j; k <= a.row; k++)
-	            	a.matrix[j][k] =  a.matrix[j][k] / divider;
-	        }
+        	// Check if there's problematical row, 
+        	for(int xx = 1; xx <= a.row; xx++){
+        		if (problem[xx] == 0){ 	// if the row is 'problematic', shift it down
+        			for(int yy = a.row; yy > xx; yy--){ 	// loop from bottom
+        				for(int zz = 1; zz <= a.col; zz++){	// shift every element downward
+        					exp1.matrix[yy][zz] = exp1.Elmt(yy-1, zz);
+        					exp1.matrix[yy-1][zz] = 0; 
+        				}
+        				exp2.matrix[yy][1] = exp2.Elmt(yy-1, 1);  // don't forget to shift the result part as well
+        			}
+        		}
+        	}
+        	a = exp1;
+        	b = exp2;
+        	// At this point, a and b is new 'expanded' matrix
         	
-        	/* Show matrix as parameter */
-        	for (int i = 1; i < params_col; i++){
+        	// Show matrix as parameter 
+        	for (int i = 1; i <= a.row; i++){
         		
         		input = String.format("X%d = ",i);
         		save(input, writer);
-        		input = String.format(format+"+",b.matrix[i][1]);
-        		save(input, writer);
         		
-        		for(int j = i+1; j < params_col; j++){
-        			input = String.format(format+"X%d + ",-a.matrix[i][j],j);
+        		if(problem[i] != 0){
+                	/* If it's not problematic, write equations  */
+        			
+        			input = String.format(format+"+",b.Elmt(i,1));
         			save(input, writer);
+        			
+        			for(int j = i+1; j < a.col; j++){ 
+            			if(problem[j] != 0){ // if the column is not parametric column
+            				input = String.format(format+"X%d + ",-a.Elmt(i, j),j);
+            				save(input, writer);
+            			}
+            			else{	// write as parameter instead
+            				input = String.format(format+"%c +",-a.Elmt(i, j),var[j]);
+                			save(input, writer);
+            			}
+            		}
+            		
+        			// Write last element (without '+' at the end)
+            		if(problem[a.col] != 0){
+        				input = String.format(format+"X%d ",-a.Elmt(i, a.col),a.col);
+        				save(input, writer);
+        			}
+        			else{
+        				input = String.format(format+"%c",-a.Elmt(i, a.col),var[a.col]);
+            			save(input, writer);
+        			}
         		}
         		
-        		for(int j = params_col; j < a.col; j++){
-        			input = String.format(format+"%c +",-a.matrix[i][j],var[j-params_col]);
-        			save(input, writer);
+        		else{
+                	/* If it's problematic, write as parameter */
+        			input = String.format("%5c",var[i]);
+            		save(input, writer);
         		}
-        		
-        		for(int j = col; j <= a.col; j++){
-        			input = String.format(format+"%c",-a.matrix[i][j],var[j-params_col]);
-        			save(input, writer);
-        		}
-        		
         		save("\n", writer);;
         	}    
-        	
-        	/* Write the parameter */
-        	for (int i = params_col; i <= a.col; i++){ 
-        		input = String.format("X%d = %5c\n",i,var[i-params_col]);
-        		save(input, writer);
-        	}
-        	
-	        try {
-				if( writer != null) writer.close();
-			}
-			catch (IOException e){
-				System.err.println("Exception : " + e.toString());	
-			}
         }
 	    
         else if (SolutionType == 3){ // No solution
         	
         	String input = String.format("Matrix unsolvable");
         	save(input, writer);
-        	
-        	try {
-    			if( writer != null) writer.close();
-    		}
-    		catch (IOException e){
-    			System.err.println("Exception : " + e.toString());	
-    		}
-        }	    
+        }
+	    
+	    // Last, close the file 
+    	try {
+			if( writer != null) writer.close();
+		}
+		catch (IOException e){
+			System.err.println("Exception : " + e.toString());	
+		}
     }
 	
 	
@@ -629,4 +693,5 @@ public class Matrix {
 			System.err.println("Exception : " + e.toString());	
 		}
 	}
+
 }
