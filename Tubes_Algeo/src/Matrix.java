@@ -629,5 +629,4 @@ public class Matrix {
 			System.err.println("Exception : " + e.toString());	
 		}
 	}
-
 }
