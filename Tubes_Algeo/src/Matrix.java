@@ -7,7 +7,7 @@ public class Matrix {
 	int col;
 	int Solution_type;
 	double [][] matrix;
-	String format = "%7.3f ";
+	String format = "%.15f ";
 	
 	
 	/*** CONSTRUCTOR ***/
